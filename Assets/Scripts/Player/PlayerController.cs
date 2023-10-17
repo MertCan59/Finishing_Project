@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public Vector2 movementInput;
     public Vector3 movementVector;
+    [SerializeField] private float TargetSpeed;
     [SerializeField] private InputReader _inputReader;
     private void OnEnable()
     {
@@ -30,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     private void ComputeMovement()
     {
-        float targetSpeed = 2f;
+        float targetSpeed = TargetSpeed;
 
         var move = new Vector3(movementInput.x, movementInput.y,0f);
         movementVector = targetSpeed * Time.fixedDeltaTime * move;

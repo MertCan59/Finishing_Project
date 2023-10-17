@@ -390,6 +390,7 @@ GameObject:
   - component: {fileID: 1158053855}
   - component: {fileID: 1158053863}
   - component: {fileID: 1158053857}
+  - component: {fileID: 1158053864}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -553,6 +554,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementInput: {x: 0, y: 0}
   movementVector: {x: 0, y: 0, z: 0}
+  TargetSpeed: 5
   _inputReader: {fileID: 11400000, guid: 3f295a6ff1867104298781dc1a3243c3, type: 2}
 --- !u!114 &1158053860
 MonoBehaviour:
@@ -581,7 +583,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inputReader: {fileID: 11400000, guid: 3f295a6ff1867104298781dc1a3243c3, type: 2}
   jumpForce: 15
-  maxJumpHeight: 10
+  maxJumpHeight: 6.5
   isJumping: 0
   groundLayer:
     serializedVersion: 2
@@ -648,6 +650,41 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1.4648438
+--- !u!70 &1158053864
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1158053850}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -1.3}
+  m_Size: {x: 0.75, y: 0.25}
+  m_Direction: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

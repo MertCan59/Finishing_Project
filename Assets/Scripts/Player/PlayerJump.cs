@@ -16,7 +16,6 @@ using UnityEngine;
     [SerializeField] private LayerMask groundLayer;
     private Transform player;
     
-
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
