@@ -6,10 +6,11 @@ using UnityEngine;
     [SerializeField] private InputReader _inputReader;
     private new Rigidbody2D rigidbody;
 
-    Vector2 yVelocity;
+    public Vector2 yVelocity;
     [SerializeField] private float jumpForce;
     [SerializeField] private float maxJumpHeight;
     public bool isJumping;
+    public bool canJumping;
 
     private bool isGrounded;
     private CircleCollider2D circleCollider;
@@ -21,6 +22,10 @@ using UnityEngine;
         rigidbody = GetComponent<Rigidbody2D>();
         circleCollider = GetComponent<CircleCollider2D>();
         player = GetComponent<Transform>();
+    }
+    private void Start()
+    {
+         
     }
     private void Update()
     {
@@ -41,14 +46,10 @@ using UnityEngine;
     {
         var jumpVelocity = new Vector2(0f, jumpForce);
         isGrounded = Physics2D.OverlapCircle(player.position, circleCollider.radius, groundLayer);
+        canJumping = isGrounded;
         if (yVelocity.y>0 && isGrounded)
         {
             rigidbody.velocity += jumpVelocity;
-            isJumping = true;
-        }
-        else
-        {
-            isJumping = false;
         }
     }
     private void OnEnable()
