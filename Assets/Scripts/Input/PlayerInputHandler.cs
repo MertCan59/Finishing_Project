@@ -12,4 +12,8 @@ public class PlayerInputHandler : MonoBehaviour
     {
         _inputReader.OnJump(jumpValue.Get<Vector2>());
     }
+    public void OnDash(InputValue dashValue)
+    {
+        _inputReader.OnDash(dashValue.Get<Vector2>());
+    }
 }

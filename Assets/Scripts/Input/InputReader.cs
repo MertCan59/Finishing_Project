@@ -7,6 +7,7 @@ public class InputReader:ScriptableObject
 {
     public event UnityAction<Vector2> MoveEvent = delegate { };
     public event UnityAction<Vector2> JumpEvent=delegate { };
+    public event UnityAction<Vector2> DashEvent = delegate { };
     public void OnMove(Vector2 value)
     {
         MoveEvent.Invoke(value);
@@ -15,5 +16,8 @@ public class InputReader:ScriptableObject
     {
         JumpEvent.Invoke(jumpValue);
     }
+    public void OnDash(Vector2 dashValue)
+    {
+        DashEvent.Invoke(dashValue);
+    }
 }
-
