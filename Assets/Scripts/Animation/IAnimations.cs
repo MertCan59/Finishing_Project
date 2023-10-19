@@ -1,5 +1,6 @@
-﻿ public interface IAnimations
+﻿using UnityEngine; 
+public interface IAnimations
 {
     float WalkAnimation(float walkSpeed);
-    bool JumpAnimation(bool canJumping,bool isJumping);
+    bool JumpAnimation(bool canJumping,bool isJumping,Animator animator);
 }

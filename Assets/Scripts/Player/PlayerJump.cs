@@ -19,6 +19,7 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private LayerMask wallLayer;
     private bool isWallSliding;
     private float wallSlidingSpeed = 1.5f;
+    [SerializeField] private float timeSinceLastJump = 0f;
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -28,7 +29,8 @@ public class PlayerJump : MonoBehaviour
     }
     private void Update()
     {
-        Jump(); IsWalled();
+        Jump(); 
+        IsWalled();
         Debug.Log(Physics2D.OverlapCircle(circleCollider.bounds.center, circleCollider.bounds.size.x, wallLayer));
     }
 
@@ -48,9 +50,11 @@ public class PlayerJump : MonoBehaviour
         var jumpVelocity = new Vector2(0f, jumpForce);
         isGrounded = Physics2D.OverlapCapsule(capsuleCollider.bounds.center, capsuleCollider.bounds.size, CapsuleDirection2D.Horizontal, 0f, groundLayer);
         canJumping = isGrounded;
-        if (yVelocity.y > 0 && isGrounded)
+        timeSinceLastJump += Time.fixedDeltaTime;
+        if (yVelocity.y > 0 && isGrounded && timeSinceLastJump>2f)
         {
             rigidbody.velocity += jumpVelocity;
+            timeSinceLastJump = 0f;
         }
     }
     private void OnEnable()

@@ -6,13 +6,14 @@ public class PlayerAnimation : IAnimations
     {
         return Mathf.Abs(walkSpeed);
     }
-    public bool JumpAnimation(bool canJumping, bool isJumping)
+    public bool JumpAnimation(bool canJumping, bool isJumping,Animator animator)
     {
         if(canJumping)
         {
-            return isJumping = false;
+            animator.SetTrigger("JumpTrigger");
+            return false;
         }
-        return isJumping=true;
+        return true;
     }
 
 }

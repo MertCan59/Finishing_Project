@@ -24,7 +24,7 @@ public class PlayerAnimationController : MonoBehaviour
     }
     private void JumpAnimation(IAnimations animations)
     {
-      animator.SetBool("isJumping",animations.JumpAnimation(playerJump.canJumping,playerJump.isJumping));
+      animator.SetBool("isJumping",animations.JumpAnimation(playerJump.canJumping,playerJump.isJumping,animator));
     }
     private void AnimatorPlayer()
     {
