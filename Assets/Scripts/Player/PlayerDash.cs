@@ -9,7 +9,7 @@ public class PlayerDash : MonoBehaviour
     private Vector2 dashInput;
     private bool canDash = true;
     [SerializeField] private float dashingPower = 2f;
-    private float dashingTime = 0.3f;
+    [SerializeField] private float dashingTime = 0.9f;
     private float dashingCooldown = 1f;
     private TrailRenderer trailRenderer;
     private new Rigidbody2D rigidbody;

@@ -19,7 +19,9 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private LayerMask wallLayer;
     private bool isWallSliding;
     private float wallSlidingSpeed = 1.5f;
-    [SerializeField] private float timeSinceLastJump = 0f;
+    [SerializeField] private float maxJumpTime = 0f;
+    public float gravity => (-2f * maxJumpHeight) / Mathf.Pow((maxJumpTime / 2f), 2);
+    Vector2 velocity;
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -31,7 +33,7 @@ public class PlayerJump : MonoBehaviour
     {
         Jump(); 
         IsWalled();
-        Debug.Log(Physics2D.OverlapCircle(circleCollider.bounds.center, circleCollider.bounds.size.x, wallLayer));
+        ApplyGravity();
     }
 
     private void FixedUpdate()
@@ -50,11 +52,11 @@ public class PlayerJump : MonoBehaviour
         var jumpVelocity = new Vector2(0f, jumpForce);
         isGrounded = Physics2D.OverlapCapsule(capsuleCollider.bounds.center, capsuleCollider.bounds.size, CapsuleDirection2D.Horizontal, 0f, groundLayer);
         canJumping = isGrounded;
-        timeSinceLastJump += Time.fixedDeltaTime;
-        if (yVelocity.y > 0 && isGrounded && timeSinceLastJump>2f)
+        maxJumpTime += Time.fixedDeltaTime;
+        if (yVelocity.y > 0 && isGrounded && maxJumpTime > 2f)
         {
             rigidbody.velocity += jumpVelocity;
-            timeSinceLastJump = 0f;
+            maxJumpTime = 0f;
         }
     }
     private void OnEnable()
@@ -85,5 +87,12 @@ public class PlayerJump : MonoBehaviour
         {
             isWallSliding = false;
         }
+    }
+    void ApplyGravity()
+    {
+        bool falling = rigidbody.velocity.y < 0f || yVelocity.y < 0f;
+        float multiplier = falling ? 2f : 1f;
+        velocity.y += gravity * multiplier;
+        velocity.y = Mathf.Max(velocity.y, gravity / 2f);
     }
 }
