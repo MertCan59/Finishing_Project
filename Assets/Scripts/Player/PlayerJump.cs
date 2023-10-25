@@ -53,7 +53,7 @@ public class PlayerJump : MonoBehaviour
         isGrounded = Physics2D.OverlapCapsule(capsuleCollider.bounds.center, capsuleCollider.bounds.size, CapsuleDirection2D.Horizontal, 0f, groundLayer);
         canJumping = isGrounded;
         maxJumpTime += Time.fixedDeltaTime;
-        if (yVelocity.y > 0 && isGrounded && maxJumpTime > 2f)
+        if (yVelocity.y > 0 && isGrounded && maxJumpTime >= 1f)
         {
             rigidbody.velocity += jumpVelocity;
             maxJumpTime = 0f;

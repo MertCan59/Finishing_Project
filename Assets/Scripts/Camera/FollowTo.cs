@@ -3,7 +3,8 @@ using UnityEngine;
 public class FollowTo : MonoBehaviour
 {
     private Transform player;
-    [SerializeField] private float offset;
+    [SerializeField] private float xOffset;
+    [SerializeField] private float yOffset;
     private void Awake()
     {
         player = GameObject.FindWithTag("Player").transform;
@@ -15,7 +16,7 @@ public class FollowTo : MonoBehaviour
     private void CameraFollow()
     {
         Vector3 cameraPosition = transform.position;
-        cameraPosition = new Vector3(player.position.x + offset, player.position.y, -10f);
+        cameraPosition = new Vector3(player.position.x + xOffset, player.position.y+ yOffset, -10f);
         transform.position = cameraPosition;
 
     }
