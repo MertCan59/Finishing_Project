@@ -4,14 +4,11 @@ public class FallPlatforms : MonoBehaviour
 {
     private bool isTouching;
     [SerializeField] private float downSpeed;
-    [SerializeField] private Rigidbody2D rigidbody;
     private Transform fallTransform;
-    private float lifeTime = 5f;
-    private bool isTriggerEntered;
+    private float lifeTime = 1f;
     private void Awake()
     {
         isTouching = false;   
-        isTriggerEntered = false;
         fallTransform = GetComponent<Transform>();
     }
     private void Update()
@@ -23,10 +20,6 @@ public class FallPlatforms : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             isTouching = true;
-        }
-        if (collision.gameObject.CompareTag("Eraser"))
-        {
-            isTriggerEntered = true;
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
@@ -45,14 +38,11 @@ public class FallPlatforms : MonoBehaviour
                 fallTransform.position.y - downSpeed*Time.deltaTime,
                 fallTransform.position.z
                 );
+            Destroy(gameObject,lifeTime);
         }
     }
     private void Invoker()
     {
         Invoke(nameof(Move),lifeTime);
-    }
-    private void OnBecameInvisible()
-    {
-        Destroy(gameObject);
     }
 }

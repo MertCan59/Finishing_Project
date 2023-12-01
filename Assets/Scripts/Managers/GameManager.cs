@@ -37,13 +37,14 @@ public class GameManager : MonoBehaviour
     {
         lives = 5;
         coins = 0;
-        LoadLevel("Scene");
+        LoadLevel("Chapter2");
     }
     public void LoadLevel(string world)
     {
         this.world = world;
-        SceneManager.LoadScene($"{world}");
+        SceneManager.LoadScene(world);
     }
+
     public void ResetLevel(float delay)
     {
         Invoke(nameof(ResetLevel), delay);
@@ -51,9 +52,9 @@ public class GameManager : MonoBehaviour
     public void ResetLevel()
     {
         lives--;
-        if (lives > 0)
+        if (lives >= 0)
         {
-            LoadLevel(world);
+            LoadLevel(this.world);
         }
         else
         {
@@ -62,7 +63,7 @@ public class GameManager : MonoBehaviour
     }
     private void GameOver()
     {
-        //it will be adding death scene  it will be empty for now
+        //it will be adding death scene it will be empty for now
     }
     public void AddCoins()
     {
