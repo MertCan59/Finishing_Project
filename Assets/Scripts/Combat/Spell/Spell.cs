@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Spell : MonoBehaviour
 {
-    [SerializeField] private string spellName;
-    [SerializeField] int spellPower;
+    public string spellName;
+    public int spellPower;
     public int manaCost;
-    [SerializeField] private enum SpellType {Attack,Heal}
-    [SerializeField] private SpellType spellType;
+    public enum SpellType {Attack,Heal}
+    public SpellType spellType;
 
     private Vector3 targetPosition;
+
+    private float destroyTime = 0.25f;
 
     private void Update()
     {
@@ -24,7 +26,7 @@ public class Spell : MonoBehaviour
         }
         else
         {
-            Destroy(this.gameObject,0.25f);
+            Destroy(this.gameObject, destroyTime);
         }
     }
     public void CastSpell(Character target)

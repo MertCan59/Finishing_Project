@@ -5,12 +5,12 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     [SerializeField] private string characterName;
-    [SerializeField] private int health;
+    public int health;
     [SerializeField] private int maxHealth;
     [SerializeField] private int attackPower;
     [SerializeField] private int defencePower;
     [SerializeField] private int manaPoint;
-    [SerializeField] private List<Spell>spells;
+    public List<Spell>spells;
 
     public void Hurt(int amount)
     {
@@ -26,7 +26,7 @@ public class Character : MonoBehaviour
         int healthAmount = Random.Range(0, 1) * (int) (amount + maxHealth*0.5f);
         health = Mathf.Min(health + healthAmount, maxHealth);
     }
-    private void Defend()
+    public void Defend()
     {
         defencePower += (int)(defencePower * 0.25f);
     }
