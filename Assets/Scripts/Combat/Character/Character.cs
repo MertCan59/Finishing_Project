@@ -7,7 +7,7 @@ public class Character : MonoBehaviour
     [SerializeField] private string characterName;
     public int health;
     [SerializeField] private int maxHealth;
-    [SerializeField] private int attackPower;
+    public int attackPower;
     [SerializeField] private int defencePower;
     [SerializeField] private int manaPoint;
     public List<Spell>spells;

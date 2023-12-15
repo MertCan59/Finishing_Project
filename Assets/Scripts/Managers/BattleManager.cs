@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
@@ -52,6 +53,72 @@ public class BattleManager : MonoBehaviour
             }
         }
         return weakestMember;
+    }
+    private void NextTurn()
+    {
+        activeTurn = activeTurn == 0 ? 1 : 0;
+    }
+    private void NextAct()
+    {
+        if (characters[0].Count > 0 && characters[1].Count>0)
+        {
+            if (characterTurnIndex < characters[activeTurn].Count-1)
+            {
+                characterTurnIndex++;
+            }
+            else
+            {
+                NextTurn();
+                characterTurnIndex = 0;
+            }
+            switch(activeTurn)
+            {
+                case 0:
+                    //UI staff
+                    break;
+                case 1:
+                    // UI staff and act
+                    StartCoroutine(PerformAct());
+                    break; 
+            }
+        }
+        else 
+        {
+            Debug.Log("Battle is finished");
+        }
+    }
+    IEnumerator PerformAct()
+    {
+        yield return new WaitForSeconds(0.5f);
+        if (characters[activeTurn][characterTurnIndex].health>0 ) 
+        {
+            characters[activeTurn][characterTurnIndex].GetComponent<Enemy>().Act();
+        }
+        yield return new WaitForSeconds(1.5f);
+        NextAct();
+    }
+
+    public void SelectCharacter(Character character)
+    {
+        if (playerIsAttacking)
+        {
+            DoAttack(characters[activeTurn][characterTurnIndex],character);
+        }else if (playerSelectedSpell != null)
+        {
+            if (characters[activeTurn][characterTurnIndex].CastSpell(playerSelectedSpell,character))
+            {
+                NextAct();
+            }
+            else
+            {
+                Debug.LogWarning("Not Enough Mana to Cast Spell");
+            }
+        }
+    }
+
+    public void DoAttack(Character attacker, Character target)
+    {
+        target.Hurt(attacker.attackPower);
     }
 
     public void StartBattle(List<Character> players,List<Character> foes)
