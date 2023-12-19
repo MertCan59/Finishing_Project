@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     {
         lives = 5;
         coins = 0;
-        LoadLevel("Combat");
+        LoadLevel("Battle");
     }
     public void LoadLevel(string world)
     {
