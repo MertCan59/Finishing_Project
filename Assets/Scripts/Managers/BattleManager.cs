@@ -13,6 +13,7 @@ public class BattleManager : MonoBehaviour
     public bool playerIsAttacking;
 
     [SerializeField] private BattleSpawnPoint[] spawnPoints;
+    [SerializeField] private BattleUIManager uiManager;
     private void Awake()
     {
         if (Instance != null)
@@ -75,10 +76,13 @@ public class BattleManager : MonoBehaviour
             {
                 case 0:
                     //UI staff
+                    uiManager.ToggelActionState(true);
+                    uiManager.BuildSpellList(GetCurrentCharacter().spells);
                     break;
                 case 1:
                     // UI staff and act
                     StartCoroutine(PerformAct());
+                    uiManager.ToggelActionState(false);
                     break; 
             }
         }
@@ -90,11 +94,12 @@ public class BattleManager : MonoBehaviour
     IEnumerator PerformAct()
     {
         yield return new WaitForSeconds(0.5f);
-        if (characters[activeTurn][characterTurnIndex].health>0 ) 
+        if (GetCurrentCharacter().health>0 ) 
         {
-            characters[activeTurn][characterTurnIndex].GetComponent<Enemy>().Act();
+           GetCurrentCharacter().GetComponent<Enemy>().Act();
         }
-        yield return new WaitForSeconds(1.5f);
+        uiManager.UpdateCharacterUI();
+        yield return new WaitForSeconds(0.5f);
         NextAct();
     }
 
@@ -102,11 +107,12 @@ public class BattleManager : MonoBehaviour
     {
         if (playerIsAttacking)
         {
-            DoAttack(characters[activeTurn][characterTurnIndex],character);
+            DoAttack(GetCurrentCharacter(),character);
         }else if (playerSelectedSpell != null)
         {
-            if (characters[activeTurn][characterTurnIndex].CastSpell(playerSelectedSpell,character))
+            if (GetCurrentCharacter().CastSpell(playerSelectedSpell,character))
             {
+                uiManager.UpdateCharacterUI();
                 NextAct();
             }
             else
@@ -136,6 +142,9 @@ public class BattleManager : MonoBehaviour
             // and first spawn points belong to foes
             characters[1].Add(spawnPoints[i + 3].Spawn(foes[i]));
         }
-
+    }
+    public Character GetCurrentCharacter()
+    {
+        return characters[activeTurn][characterTurnIndex];
     }
 }

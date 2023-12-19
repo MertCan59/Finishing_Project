@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    [SerializeField] private string characterName;
+    public string characterName;
     public int health;
-    [SerializeField] private int maxHealth;
+    public int maxHealth;
     public int attackPower;
-    [SerializeField] private int defencePower;
-    [SerializeField] private int manaPoint;
+    public int defencePower;
+    public int manaPoint;
     public List<Spell>spells;
 
     public void Hurt(int amount)
