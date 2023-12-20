@@ -16,4 +16,15 @@ public class PlayerAnimation : IAnimations
         return true;
     }
 
+    public bool AttackAnimation(bool isAttacking, float distance)
+    {
+        if(isAttacking && distance<=1)
+        {
+            return isAttacking=true;
+        }
+        else
+        {
+            return isAttacking=false;
+        }
+    }
 }
