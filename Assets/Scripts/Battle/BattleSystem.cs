@@ -21,10 +21,13 @@ public class BattleSystem : MonoBehaviour
     public GameObject enemyPrefab;
     public Transform enemyBattleStation;
     public GameObject healSpell;
+    public GameObject iceSpell;
+    public GameObject fireSpell;
 
 
     Unit playerUnit;
     Unit enemyUnit;
+    InitialTheGame theGame;
 
     [SerializeField] private GameObject playerGO;
     [SerializeField] private GameObject panel;
@@ -35,10 +38,12 @@ public class BattleSystem : MonoBehaviour
     public BattleHud playerHUD;
     public BattleHud enemyHUD;
 
+
     // Start is called before the first frame update
     void Start()
     {
         panel.SetActive(false);
+        theGame = new InitialTheGame();
         state =BattleState.START;
         StartCoroutine(SetupBattle());        
     }
@@ -53,7 +58,7 @@ public class BattleSystem : MonoBehaviour
         
         playerUnit= playerGO.GetComponent<Unit>();
         
-        GameObject enemyGo= Instantiate(enemyPrefab,enemyBattleStation);
+        GameObject enemyGo= Instantiate(enemyPrefab,enemyBattleStation.transform.position,Quaternion.identity);
         enemyUnit = enemyGo.GetComponent<Unit>();
 
         dialogueText.text = "A wild "+enemyUnit.unitName+" approaches...";
@@ -96,34 +101,79 @@ public class BattleSystem : MonoBehaviour
         bool isActive = panel.activeSelf;
         while (true)
         {
-            if (Input.GetKeyDown(KeyCode.H) && isActive == true)
+            if (Input.GetKeyDown(KeyCode.H) && isActive)
             {
-                
+                bool isAttacking = true;
                 int healingPower=Random.Range(10, 25);
                 GameObject castspell = Instantiate(healSpell, playerTransform.position, Quaternion.identity);
+                playerAnimator.SetBool("isAttacking", isAttacking);
                 playerUnit.Heal(healingPower);
                 playerHUD.SetHP(playerUnit.currentHp);
                 Destroy(castspell, .75f);
                 dialogueText.text = "You are healed: "+healingPower;
                 yield return new WaitForSeconds(0.5f);
+                isAttacking = false;
+                playerAnimator.SetBool("isAttacking", isAttacking);
                 panel.SetActive(false);
                 isActive = panel.activeSelf;
                 state = BattleState.ENEMYTURN;
                 StartCoroutine(EnemyTurn());
                 break;
             }
-
-            if (Input.GetKeyDown(KeyCode.I) && isActive == true)
+            if (Input.GetKeyDown(KeyCode.I) && isActive)
             {
-                dialogueText.text = "You used iceball ";
-                yield return new WaitForSeconds(1f);
+                bool isAttacking = true;
+                int magicPower= Random.Range(23,42);
+                GameObject castspell = Instantiate(iceSpell, enemyBattleStation.transform.position, Quaternion.identity);
+                playerAnimator.SetBool("isAttacking", isAttacking);
+                bool isDead = enemyUnit.TakeDamage(magicPower);
+                enemyHUD.SetHP(enemyUnit.currentHp);
+                dialogueText.text = "You used iceball "+magicPower;
+                yield return new WaitForSeconds(.5f);
+                Destroy(castspell);
+                isAttacking = false;
+                playerAnimator.SetBool("isAttacking", isAttacking);
                 panel.SetActive(false);
                 isActive = panel.activeSelf;
-                state = BattleState.ENEMYTURN;
-                StartCoroutine(EnemyTurn());
+                if (isDead)
+                {
+                    state = BattleState.WON;
+                    EndBattle();
+                }
+                else
+                {
+                    state = BattleState.ENEMYTURN;
+                    StartCoroutine(EnemyTurn());
+                }
                 break;
             }
-
+            if (Input.GetKeyDown(KeyCode.F) && isActive)
+            {
+                bool isAttacking = true;
+                int magicPower = Random.Range(18, 32);
+                GameObject castspell = Instantiate(fireSpell, enemyBattleStation.transform.position, Quaternion.identity);
+                playerAnimator.SetBool("isAttacking", isAttacking);
+                bool isDead = enemyUnit.TakeDamage(magicPower);
+                enemyHUD.SetHP(enemyUnit.currentHp);
+                dialogueText.text = "You used fireball: "+magicPower;
+                yield return new WaitForSeconds(.5f);
+                Destroy(castspell);
+                isAttacking = false;
+                playerAnimator.SetBool("isAttacking", isAttacking);
+                panel.SetActive(false);
+                isActive = panel.activeSelf;
+                if (isDead)
+                {
+                    state = BattleState.WON;
+                    EndBattle();
+                }
+                else
+                {
+                    state = BattleState.ENEMYTURN;
+                    StartCoroutine(EnemyTurn());
+                }
+                break;
+            }
             yield return null;
         }
     }
@@ -152,6 +202,10 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(1f);
         bool isDead=  playerUnit.TakeDamage(enemyUnit.damage);
         playerHUD.SetHP(playerUnit.currentHp);
+        if (playerUnit.currentHp <= 0)
+        {
+            playerUnit.PlayerDead();
+        }
         yield return new WaitForSeconds(1f);
 
         if (isDead)

@@ -1,4 +1,6 @@
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Unit:MonoBehaviour
 {
@@ -7,7 +9,6 @@ public class Unit:MonoBehaviour
     public int maxHp;
     public int currentHp;
     public int defencePower;
-    public int spellPower;
 
     public bool TakeDamage(int dmg)
     {
@@ -21,6 +22,10 @@ public class Unit:MonoBehaviour
         {
             return false; 
         }
+    }
+    public void PlayerDead()
+    {
+        SceneManager.LoadScene("BattleDeathScene");
     }
     public void Heal(int amount)
     {

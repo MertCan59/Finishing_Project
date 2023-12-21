@@ -1,13 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class DestroyObject : MonoBehaviour
-{   
+public class DestroyObject2 : MonoBehaviour
+{
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            GameManager.Instance.ResetLevel("Chapter1");
+            GameManager.Instance.ResetLevel("Chapter2");
         }
     }
 }

@@ -49,12 +49,12 @@ public class GameManager : MonoBehaviour
     {
         Invoke(nameof(ResetLevel), delay);
     }
-    public void ResetLevel()
+    public void ResetLevel(string world)
     {
         lives--;
         if (lives >= 0)
         {
-            LoadLevel(this.world);
+            LoadLevel(world);
         }
         else
         {
@@ -63,11 +63,10 @@ public class GameManager : MonoBehaviour
     }
     private void GameOver()
     {
-        //it will be adding death scene it will be empty for now
+        SceneManager.LoadScene("Death");
     }
     public void AddCoins()
     {
         coins++;
-        //maybe something special can be added  for 100 coins but that's it for now
     }
 }

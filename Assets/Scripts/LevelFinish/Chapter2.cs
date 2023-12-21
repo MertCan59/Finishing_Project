@@ -21,7 +21,7 @@ public class Chapter2 : MonoBehaviour
     {
         if (chapter)
         {
-            GameManager.Instance.LoadLevel("Combat");
+            GameManager.Instance.LoadLevel("Battle");
             yield return new WaitForSeconds(1.25f);
         }
         yield return null;
