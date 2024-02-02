@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 
 public enum BattleState
@@ -50,7 +52,6 @@ public class BattleSystem : MonoBehaviour
     private void Update()
     {
         OnAttack();
-        OnDefend();
         OnSpell();
     }
     IEnumerator SetupBattle()
@@ -85,6 +86,8 @@ public class BattleSystem : MonoBehaviour
         {
             state = BattleState.WON;
             EndBattle();
+            GameManager.Instance.LoadLevel("win");
+
         }
         else
         {
@@ -139,6 +142,8 @@ public class BattleSystem : MonoBehaviour
                 {
                     state = BattleState.WON;
                     EndBattle();
+                    SceneManager.LoadScene("win");
+
                 }
                 else
                 {
@@ -166,6 +171,7 @@ public class BattleSystem : MonoBehaviour
                 {
                     state = BattleState.WON;
                     EndBattle();
+                    SceneManager.LoadScene("win");
                 }
                 else
                 {
@@ -175,24 +181,6 @@ public class BattleSystem : MonoBehaviour
                 break;
             }
             yield return null;
-        }
-    }
-    IEnumerator PlayerDefence()
-    {
-        dialogueText.text = playerUnit.unitName + " is defending";
-        bool isDead = playerUnit.TakeDamage(enemyUnit.damage - playerUnit.defencePower);
-        playerHUD.SetHP(playerUnit.currentHp);
-        yield return new WaitForSeconds(1f);
-
-        if (isDead)
-        {
-            state = BattleState.LOST;
-            EndBattle();
-        }
-        else
-        {
-            state = BattleState.PLAYERTURN;
-            PlayerTurn();
         }
     }
 
@@ -212,6 +200,8 @@ public class BattleSystem : MonoBehaviour
         {
             state = BattleState.LOST;
             EndBattle();
+            GameManager.Instance.LoadLevel("BattleDeathScene");
+
         }
         else
         {
@@ -245,15 +235,6 @@ public class BattleSystem : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             StartCoroutine(PlayerAttack());
-        }
-    }
-    void OnDefend()
-    {
-        if (state != BattleState.PLAYERTURN)
-            return;
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            StartCoroutine(PlayerDefence());
         }
     }
     void OnSpell()
