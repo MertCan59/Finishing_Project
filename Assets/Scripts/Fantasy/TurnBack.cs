@@ -30,7 +30,7 @@ public class TurnBack : MonoBehaviour
                 isCloneCreated=true;
             }else
             {
-                character.transform.position=characterPrefab.transform.position;
+                character.transform.position=go.transform.position;
                 Destroy(go,destroyTime);
                 isCloneCreated=false;
             } 
